@@ -1,7 +1,8 @@
 // Fişçi service worker — uygulama dosyalarını önbelleğe alır (çevrimdışı açılış)
-const CACHE = "fisci-v1";
+const CACHE = "fisci-v2";
 const SHELL = ["./", "index.html", "style.css", "js/app.js", "js/parser.js", "js/store.js", "js/ocr.js",
-  "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
+  "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png",
+  "vendor/tesseract/tesseract.min.js", "vendor/tesseract/worker.min.js", "vendor/tesseract/worker-shim.js", "vendor/tesseract/tur-data.js"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

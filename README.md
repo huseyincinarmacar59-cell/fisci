@@ -43,6 +43,7 @@ js/app.js             ekranlar, formlar, tarama akışı
 js/parser.js          fiş metninden mağaza/tarih/toplam/kategori/ürün çıkarma
 js/ocr.js             görüntü iyileştirme + Tesseract (Türkçe)
 js/store.js           veri katmanı, CSV/JSON yedek
+vendor/tesseract/     OCR motoru + Türkçe dil verisi (internet/CDN gerekmez)
 sw.js                 çevrimdışı önbellek
 manifest.webmanifest  PWA ayarları
 ```

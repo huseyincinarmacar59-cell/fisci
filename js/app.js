@@ -244,7 +244,7 @@ async function scanFile(file) {
   sheet.dataset.lock = "1";
   openSheet(`<div class="scan"><div class="scanbox noimg" id="sbox"></div>
     <h2 id="sTitle">Hazırlanıyor…</h2><div class="prog"><i id="sBar"></i></div>
-    <p class="sub" id="sSub">İlk taramada Türkçe dil paketi indirilir (~5 MB), sonra çok daha hızlı.</p></div>`);
+    <p class="sub" id="sSub">İlk taramada OCR motoru yüklenir, sonraki taramalar daha hızlı.</p></div>`);
   try {
     const { canvas, thumb } = await preprocess(file);
     const box = $("#sbox"); box.classList.remove("noimg"); box.style.backgroundImage = `url(${thumb})`;

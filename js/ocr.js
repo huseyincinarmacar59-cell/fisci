@@ -1,5 +1,5 @@
 // Fişçi — cihaz içi OCR (Tesseract.js, Türkçe)
-// Fotoğraf hiçbir sunucuya gönderilmez; dil verisi ilk kullanımda indirilip tarayıcıda önbelleğe alınır.
+// Fotoğraf hiçbir sunucuya gönderilmez. OCR motoru ve Türkçe dil verisi uygulamanın içinde (vendor/).
 
 let workerPromise = null;
 let progressCb = () => {};
@@ -8,7 +8,7 @@ function loadScript(src) {
   return new Promise((res, rej) => {
     if (window.Tesseract) return res();
     const s = document.createElement("script");
-    s.src = src; s.onload = res; s.onerror = () => rej(new Error("OCR kütüphanesi yüklenemedi (internet?)"));
+    s.src = src; s.onload = res; s.onerror = () => rej(new Error("OCR motoru yüklenemedi"));
     document.head.appendChild(s);
   });
 }
@@ -16,8 +16,15 @@ function loadScript(src) {
 async function getWorker() {
   if (!workerPromise) {
     workerPromise = (async () => {
-      await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js");
+      const base = new URL("vendor/tesseract/", location.href).href;
+      await loadScript(base + "tesseract.min.js");
       const w = await window.Tesseract.createWorker("tur", 1, {
+        workerPath: base + "worker-shim.js",
+        workerBlobURL: false,
+        corePath: base,
+        langPath: base.replace(/\/$/, ""),
+        gzip: true,
+        cacheMethod: "none",
         logger: m => {
           if (m.status === "recognizing text") progressCb(0.3 + m.progress * 0.7, "Fiş okunuyor");
           else if (/load|initializ/.test(m.status)) progressCb(Math.min(0.3, (m.progress || 0) * 0.3), "Türkçe dil paketi hazırlanıyor");
